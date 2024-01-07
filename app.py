@@ -48,24 +48,24 @@ def getItemByShoppingcart(cart_id):
 @app.route("/api/item/by_order/<order_id>")
 def getItemsByOrder(order_id):
     return itemService.getItemsByOrder(order_id)
-#
-# @app.route("/item/add_to_cart/<product_id>/<cart_id>", methods=["POST"])
-# def addItemToCart(product_id, cart_id):
-#     return itemService.addItemToCart(product_id, cart_id)
+
+@app.route("/api/item/add_to_cart/<product_id>/<cart_id>", methods=["POST"])
+def addItemToCart(product_id, cart_id):
+    return itemService.addItemToCart(request, product_id, cart_id)
 #
 # @app.route("/item/empty_cart/<cart_id>", methods=["DELETE"])
 # def deleteAllFromCart(cart_id):
 #     return itemService.deleteAllFromCart(cart_id)
 #
-# @app.route("/item/<item_id>", methods=["DELETE"])
-# def deleteItem(item_id):
-#     return itemService.deleteItem(item_id)
-#
-# @app.route("/item/<item_id>", methods=["PUT"])
-# def changeItem(item_id):
-#     return itemService.changeItem(item_id)
-#
-#
+@app.route("/api/item/<item_id>", methods=["DELETE"])
+def deleteItem(item_id):
+    return itemService.deleteItem(item_id)
+
+@app.route("/api/item/<item_id>", methods=["PUT"])
+def changeItem(item_id):
+    return itemService.changeItem(request, item_id)
+
+
 # # |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 # # |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 @app.route("/api/shoppingcart/by_user/<user_id>")

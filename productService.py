@@ -165,8 +165,6 @@ def addProduct(user_id, product):
         mycursor.execute(sql, val)
         con.commit()
         return ("gelukt")
-        # myresult = mycursor.fetchall()
-        # return myresult
 
     finally:
         con.close()

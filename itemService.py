@@ -151,3 +151,48 @@ def getItemByShoppingcart(cart_id):
 
     finally:
         con.close()
+
+
+def addItemToCart(data, product_id, cart_id):
+    con = get_database_connection()
+
+    try:
+        mycursor = con.cursor()
+
+        sql = "INSERT INTO item (quantity, product_id, shopping_cart_id) VALUES (%s, %s, %s)"
+        val = (data.json['quantity'], product_id, cart_id)
+        mycursor.execute(sql, val)
+        con.commit()
+        return "gelukt"
+
+    finally:
+        con.close()
+
+def changeItem(data, item_id):
+    con = get_database_connection()
+
+    try:
+        mycursor = con.cursor()
+
+        sql = "UPDATE item SET quantity = %s WHERE id = %s"
+        val = (data.json['quantity'], item_id)
+        mycursor.execute(sql, val)
+        con.commit()
+        return "gelukt"
+
+    finally:
+        con.close()
+
+def deleteItem(item_id):
+    con = get_database_connection()
+
+    try:
+        mycursor = con.cursor()
+
+        sql = "DELETE FROM item WHERE id = %s"
+        mycursor.execute(sql, (item_id,))
+        con.commit()
+        return "gelukt"
+
+    finally:
+        con.close()
