@@ -6,6 +6,7 @@ import productService
 import itemService
 import userService
 import shoppingcartService
+import orderService
 
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -30,9 +31,9 @@ def addProduct(user_id):
 
 # # |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 # # |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-# @app.route("/order/by_user/<user_id>")
-# def getOrdersByUser(user_id):
-#     return orderService.getOrdersByUser(user_id)
+@app.route("/api/order/by_user/<user_id>")
+def getOrdersByUser(user_id):
+    return orderService.getOrdersByUser(user_id)
 #
 # @app.route("/order/user/<user_id>", methods=["POST"])
 # def postOrder(user_id):
