@@ -3,6 +3,9 @@ from flask_cors import CORS, cross_origin
 import json
 
 import productService
+import itemService
+import userService
+import shoppingcartService
 
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -12,15 +15,15 @@ cors = CORS(app)
 def hello_world():
     return "<p>Hello, World!</p>"
 
-@app.route("/product")
+@app.route("/api/product")
 def getProducts():
     return productService.getProducts()
 
-@app.route("/product/<id>")
+@app.route("/api/product/<id>")
 def getProductById(id):
     return productService.getProductById(id)
 
-@app.route("/product/user/<user_id>", methods=["POST"])
+@app.route("/api/product/user/<user_id>", methods=["POST"])
 def addProduct(user_id):
     return productService.addProduct(user_id, request)
 
@@ -37,13 +40,13 @@ def addProduct(user_id):
 #
 # # |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 # # |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-# @app.route("/item/by_shoppingcart/<cart_id>")
-# def getItemByShoppingcart(product_id, cart_id):
-#     return itemService.getItemByShoppingcart(product_id, cart_id)
-#
-# @app.route("/item/by_order/<order_id>")
-# def getItemsByOrder(order_id):
-#     return itemService.getItemsByOrder(order_id)
+@app.route("/api/item/by_shopping_cart/<cart_id>")
+def getItemByShoppingcart(cart_id):
+    return itemService.getItemByShoppingcart(cart_id)
+
+@app.route("/api/item/by_order/<order_id>")
+def getItemsByOrder(order_id):
+    return itemService.getItemsByOrder(order_id)
 #
 # @app.route("/item/add_to_cart/<product_id>/<cart_id>", methods=["POST"])
 # def addItemToCart(product_id, cart_id):
@@ -64,15 +67,15 @@ def addProduct(user_id):
 #
 # # |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 # # |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-# @app.route("/shoppingcart/by_user/<user_id>")
-# def getShoppingcartByUser(user_id):
-#     return itemService.getShoppingcartByUser(user_id)
-#
-#
-# @app.route("auth/login", methods=["POST"])
-# def login():
-#     return userService.login()
-#
+@app.route("/api/shoppingcart/by_user/<user_id>")
+def getShoppingcartByUser(user_id):
+    return shoppingcartService.getShoppingcartByUser(user_id)
+
+
+@app.route("/auth/login", methods=["POST"])
+def login():
+    return userService.login(request)
+
 # @app.route("user/signup", methods=["POST"])
 # def signUp():
 #     return userService.signUp()
