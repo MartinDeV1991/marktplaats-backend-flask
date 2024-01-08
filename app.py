@@ -20,6 +20,10 @@ def hello_world():
 def getProducts():
     return productService.getProducts()
 
+@app.route("/api/product/search_name/<search_term>")
+def getProductsBySearchTerm(search_term):
+    return productService.getProductsBySearchTerm(search_term)
+
 @app.route("/api/product/<id>")
 def getProductById(id):
     return productService.getProductById(id)

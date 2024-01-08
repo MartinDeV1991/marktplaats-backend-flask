@@ -148,6 +148,73 @@ def getProductById(product_id):
         con.close()
 
 
+def getProductsBySearchTerm(search_term):
+    con = get_database_connection()
+    print(search_term)
+    try:
+        mycursor = con.cursor()
+
+        sql = """
+            SELECT 
+                product.id,
+                product.product_type as productType,
+                product.product_description as productDescription,
+                product.product_name as productName,
+                product.price,
+                product.size,
+                product.weight,
+                foto.url,
+                product_details.property_name as propertyName,
+                product_details.property_value as propertyValue
+            FROM product
+            LEFT JOIN foto on product.id = foto.product_id 
+            LEFT JOIN product_details ON product.id = product_details.product_id
+            WHERE product.product_name like %s
+        """
+
+        mycursor.execute(sql, (f"%{search_term}%",))
+        myresult = mycursor.fetchall()
+
+        # Get column names from cursor's description
+        column_names = [desc[0] for desc in mycursor.description]
+
+        # Transforming the data into a dictionary of lists
+        products_data = {}
+
+        excluded_columns = ["url", "propertyName", "propertyValue"]
+        filtered_columns = [col for col in column_names if col not in excluded_columns]
+
+        for row in myresult:
+            product_id = row[column_names.index("id")]
+
+            # Create a product_data dictionary if it doesn't exist for the current product_id
+            if product_id not in products_data:
+                products_data[product_id] = {key: row[column_names.index(key)] for key in filtered_columns}
+                products_data[product_id]["foto"] = []
+                products_data[product_id]['propertyName'] = []
+                products_data[product_id]['propertyValue'] = []
+
+            # Append each unique photo URL to the 'foto' list
+            photo_url = row[column_names.index("url")]
+            if photo_url not in products_data[product_id]['foto']:
+                products_data[product_id]['foto'].append(photo_url)
+
+            # Append each unique property name and value to the respective lists
+            property_name = row[column_names.index('propertyName')]
+            property_value = row[column_names.index('propertyValue')]
+            if property_name and property_value and (property_name, property_value) not in zip(
+                products_data[product_id]['propertyName'], products_data[product_id]['propertyValue']):
+                products_data[product_id]['propertyName'].append(property_name)
+                products_data[product_id]['propertyValue'].append(property_value)
+
+        # Convert the dictionary of lists to a list of dictionaries
+        result_list = [v for v in products_data.values()]
+
+        return result_list
+
+    finally:
+        con.close()
+
 def addProduct(user_id, product):
     con = get_database_connection()
 
