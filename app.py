@@ -34,11 +34,11 @@ def addProduct(user_id):
 @app.route("/api/order/by_user/<user_id>")
 def getOrdersByUser(user_id):
     return orderService.getOrdersByUser(user_id)
-#
-# @app.route("/order/user/<user_id>", methods=["POST"])
-# def postOrder(user_id):
-#     return orderService.postOrder(user_id)
-#
+
+@app.route("/api/order/user/<user_id>", methods=["POST"])
+def postOrder(user_id):
+    return orderService.postOrder(request, user_id)
+
 # # |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 # # |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 @app.route("/api/item/by_shopping_cart/<cart_id>")
@@ -52,11 +52,11 @@ def getItemsByOrder(order_id):
 @app.route("/api/item/add_to_cart/<product_id>/<cart_id>", methods=["POST"])
 def addItemToCart(product_id, cart_id):
     return itemService.addItemToCart(request, product_id, cart_id)
-#
-# @app.route("/item/empty_cart/<cart_id>", methods=["DELETE"])
-# def deleteAllFromCart(cart_id):
-#     return itemService.deleteAllFromCart(cart_id)
-#
+
+@app.route("/api/item/empty_cart/<user_id>", methods=["DELETE"])
+def deleteAllFromCart(user_id):
+    return itemService.deleteAllFromCart(user_id)
+
 @app.route("/api/item/<item_id>", methods=["DELETE"])
 def deleteItem(item_id):
     return itemService.deleteItem(item_id)

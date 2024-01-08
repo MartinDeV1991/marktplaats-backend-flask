@@ -1,7 +1,7 @@
 import mysql.connector
 import json
 from flask import jsonify, request
-
+import shoppingcartService
 
 def get_database_connection():
     con = mysql.connector.connect(
@@ -191,6 +191,22 @@ def deleteItem(item_id):
 
         sql = "DELETE FROM item WHERE id = %s"
         mycursor.execute(sql, (item_id,))
+        con.commit()
+        return "gelukt"
+
+    finally:
+        con.close()
+
+def deleteAllFromCart(user_id):
+    con = get_database_connection()
+    cart = shoppingcartService.getShoppingcartByUser(user_id)
+    cart_id = cart.json['id']
+
+    try:
+        mycursor = con.cursor()
+
+        sql = "DELETE FROM item WHERE shopping_cart_id = %s"
+        mycursor.execute(sql, (cart_id,))
         con.commit()
         return "gelukt"
 

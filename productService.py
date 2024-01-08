@@ -150,6 +150,7 @@ def getProductById(product_id):
 
 def addProduct(user_id, product):
     con = get_database_connection()
+
     productName = product.json['productName']
     productDescription = product.json['productDescription']
     productType = product.json['productType']
